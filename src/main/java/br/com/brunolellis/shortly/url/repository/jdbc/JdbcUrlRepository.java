@@ -1,24 +1,27 @@
-package br.com.brunolellis.shortly.url.repository;
+package br.com.brunolellis.shortly.url.repository.jdbc;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import br.com.brunolellis.shortly.url.Url;
+import br.com.brunolellis.shortly.url.repository.UrlRepository;
 
 @Repository
 public class JdbcUrlRepository implements UrlRepository {
 
-	private final String INSERT = "insert into urls(short_url, url, visits) values(?, ?, 0)";
-	private final String UPDATE = "update urls SET visits = visits + 1 WHERE short_url = ?";
-	private final String FIND_BY_SHORT_URL = "select * from urls where short_url = ?";
-	private final String COUNT_BY_SHORT_URL = "select count(1) from urls where short_url = ?";
+	private static final String INSERT = "insert into urls(short_url, url, visits) values(?, ?, 0)";
+	private static final String UPDATE = "update urls SET visits = visits + 1 WHERE short_url = ?";
+	private static final String FIND_BY_SHORT_URL = "select * from urls where short_url = ?";
+	private static final String COUNT_BY_SHORT_URL = "select count(1) from urls where short_url = ?";
 
-	@Autowired
 	private JdbcTemplate jdbcTemplate;
+
+	public JdbcUrlRepository(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
 
 	@Override
 	public Url save(Url url) {
@@ -29,16 +32,15 @@ public class JdbcUrlRepository implements UrlRepository {
 		if (url.getId() == null) {
 			return create(url);
 		}
-		
-		return update(url);
 
+		return update(url);
 	}
 
 	private Url create(Url url) {
 		jdbcTemplate.update(INSERT, new Object[] { url.getShortUrl(), url.getUrl() });
 		return findByShortUrl(url.getShortUrl()).get();
 	}
-	
+
 	private Url update(Url url) {
 		jdbcTemplate.update(UPDATE, new Object[] { url.getShortUrl() });
 		return findByShortUrl(url.getShortUrl()).get();

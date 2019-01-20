@@ -1,4 +1,4 @@
-package br.com.brunolellis.shortly.url.repository;
+package br.com.brunolellis.shortly.url.repository.jdbc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

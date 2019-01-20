@@ -1,10 +1,14 @@
 package br.com.brunolellis.shortly.url;
 
+import java.io.Serializable;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class Url {
+public class Url implements Serializable { 
+	// TODO: change Serializable to improve perfomance
+
+	private static final long serialVersionUID = 4156287387052804214L;
 
 	private static final Pattern VALID_URL = Pattern
 			.compile("^(https?|ftp)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]");
