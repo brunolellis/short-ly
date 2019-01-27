@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class Url implements Serializable { 
+public class Url implements Serializable {
 	// TODO: change Serializable to improve perfomance
 
 	private static final long serialVersionUID = 4156287387052804214L;
@@ -19,6 +19,12 @@ public class Url implements Serializable {
 	private Long visits;
 
 	public Url() {
+	}
+
+	public Url(String shortUrl, String url) {
+		super();
+		this.shortUrl = shortUrl;
+		this.url = url;
 	}
 
 	@JsonIgnore
@@ -52,6 +58,7 @@ public class Url implements Serializable {
 
 	/**
 	 * an url must have a prefix. defaults to "http" prefix in case it is missing.
+	 * 
 	 * @param url
 	 */
 	public void setUrl(String url) {
